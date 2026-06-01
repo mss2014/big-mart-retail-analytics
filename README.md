@@ -24,5 +24,35 @@ Transforms raw retail transactional data into an interactive, executive-ready Po
 *   **Numerical Imputation:** Filled **1,463 missing values** in `Item_Weight` using the baseline average weight of `12.85`.
 *   **Anomaly Rectification:** Replaced unrealistic `0.00` scores in `Item_Visibility` (526 items) with a baseline median marker of `0.066`.
 
+## Formulas & Analytical Logic
+
+This project utilizes explicit formulas across both the data transformation (Power Query) and data modeling (DAX) phases to ensure absolute calculation accuracy.
+
+### Data Modeling Measures (DAX)
+
+*   **Total Revenue:**
+```DAX
+    Total Revenue = SUM(bigmart_data[Item_Outlet_Sales])
+    ```
+    *Aggregates gross operational retail revenue ($18.59M).*
+
+*   **Average Item Price (MRP):**
+```DAX
+    Average MRP = AVERAGE(bigmart_data[Item_MRP])
+    ```
+*Establishes the base product cost benchmark ($140.99).*
+
+*   **Average Sales per Store:**
+```DAX
+    Avg Sales per Store = 
+    DIVIDE(
+        SUM(bigmart_data[Item_Outlet_Sales]), 
+        DISTINCTCOUNT(bigmart_data[Outlet_Identifier])
+    )
+    ```
+    *Divides total revenue by the 10 active unique locations to set a store-level baseline ($1.86M).*
+
+---
+
 ## License
 This project is licensed under the MIT License. See the `LICENSE` file for more details.
